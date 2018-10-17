@@ -20,5 +20,6 @@ Route::post('/register', 'UserController@store');
 Route::post('/login', 'AuthController@login');
 
 Route::middleware('auth:api')->group(function () {
+    Route::get('/tags', 'TagController@index');
     Route::post('/tags', 'TagController@store');
 });

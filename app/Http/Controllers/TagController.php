@@ -9,6 +9,29 @@ use Illuminate\Http\Request;
 
 class TagController extends Controller
 {
+    public function index(Request $request)
+    {
+        $user = $request->user();
+
+        if ($request->query('day') == 'today') {
+            $today = today()->format('Y-m-d');
+            $tags = Tag::select(['tag'])->where('user_id', $user['id'])->where('created_at', 'like', $today . '%')->get();
+            return response()->json([
+                'today' => $today,
+                'tags' => $tags
+            ]);
+        } else if ($request->query() == null) {
+            $tags = Tag::select(['tag'])->where('user_id', $user['id'])->get();
+            return response()->json([
+                'tags' => $tags
+            ]);
+        } else {
+            return response()->json([
+                'status' => 'QueryString Error'
+            ]);
+        }
+    }
+
     public function store(Request $request)
     {
         $input = $request->all();
