@@ -36,7 +36,10 @@ class AuthController extends Controller
             return response()->json([
                 'status' => 'something wrong'
             ]);
-        } else {
+        }
+        $api_token = User::select('api_token')->where('email', $input['email'])->first();
+        // 如果沒有發過token的話，重發
+        if ($api_token['api_token'] == null) {
             // 產生 api_token
             $token = str_random(20);
 
@@ -49,6 +52,11 @@ class AuthController extends Controller
             return response()->json([
                 'statue' => 'login success',
                 'api_token' => $token
+            ]);
+        } else {
+            return response()->json([
+                'statue' => 'login success',
+                'api_token' => $api_token['api_token']
             ]);
         }
     }
