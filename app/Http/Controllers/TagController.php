@@ -66,4 +66,20 @@ class TagController extends Controller
             'status' => 'tag success'
         ]);
     }
+
+    public function count()
+    {
+        $key = array();
+        $kindOfTag = Tag::select(['tag'])->distinct()->get();
+        foreach ($kindOfTag as $item) {
+            array_push($key, $item['tag']);
+        }
+        $value = array();
+        for ($i = 0; $i < sizeof($key); $i++) {
+            $countOfTag = Tag::where('tag', $key[$i])->count();
+            array_push($value, $countOfTag);
+        }
+        $result = array_combine($key, $value);
+        return response($result);
+    }
 }

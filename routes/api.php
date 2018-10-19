@@ -25,5 +25,5 @@ Route::middleware('auth:api')->group(function () {
 });
 
 Route::middleware('auth:api', 'idAdmin')->group(function () {
-    Route::get('/users', 'UserController@index');
+    Route::get('/tags/count', 'TagController@count');
 });
