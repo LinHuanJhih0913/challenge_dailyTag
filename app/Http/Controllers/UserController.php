@@ -2,20 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Tag;
 use App\User;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
-    public function index()
-    {
-        $users = User::all();
-        return response()->json([
-            'users' => $users
-        ]);
-    }
-
     public function store(Request $request)
     {
         $input = $request->all();
@@ -53,5 +46,10 @@ class UserController extends Controller
         return response()->json([
             'status' => 'register success'
         ]);
+    }
+
+    public function show(Request $request, User $user)
+    {
+        return $user->tags;
     }
 }
