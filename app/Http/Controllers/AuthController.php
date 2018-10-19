@@ -37,18 +37,15 @@ class AuthController extends Controller
                 'status' => 'something wrong'
             ]);
         }
-        $api_token = User::select('api_token')->where('email', $input['email'])->first();
-        // 如果沒有發過token的話，重發
-        if ($api_token['api_token'] == null) {
-            // 產生 api_token
+
+        $user = $request->user();
+        if ($user['api_token'] == null) {
             $token = str_random(20);
 
-            // 將 api_token 存進 DB
-            User::where('id', Auth::id())->update([
+            User::where('id', $user['id'])->update([
                 'api_token' => $token
             ]);
-
-            // 發 api_token 給 client
+            
             return response()->json([
                 'statue' => 'login success',
                 'api_token' => $token
@@ -56,7 +53,7 @@ class AuthController extends Controller
         } else {
             return response()->json([
                 'statue' => 'login success',
-                'api_token' => $api_token['api_token']
+                'api_token' => $user['api_token']
             ]);
         }
     }
