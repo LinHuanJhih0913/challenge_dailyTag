@@ -82,4 +82,9 @@ class TagController extends Controller
         $result = array_combine($key, $value);
         return response($result);
     }
+
+    public function all()
+    {
+        return Tag::all();
+    }
 }
