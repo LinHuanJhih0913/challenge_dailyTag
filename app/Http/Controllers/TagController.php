@@ -85,6 +85,6 @@ class TagController extends Controller
 
     public function all()
     {
-        return Tag::all();
+        return response()->json(Tag::select(['user_id', 'tag'])->get(), 200);
     }
 }
