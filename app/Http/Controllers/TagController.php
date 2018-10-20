@@ -21,14 +21,14 @@ class TagController extends Controller
                 'tags' => $tags
             ]);
         } else if ($request->query() == null) {
-            $tags = Tag::select(['tag'])->where('user_id', $user['id'])->get();
+            $tags = Tag::select(['tag'])->where('user_id', $user['id'])->latest()->get();
             return response()->json([
                 'tags' => $tags
             ]);
         } else {
             return response()->json([
                 'status' => 'QueryString Error'
-            ]);
+            ], 400);
         }
     }
 
