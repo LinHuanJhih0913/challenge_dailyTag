@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Tag;
 use App\User;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
@@ -48,8 +47,16 @@ class UserController extends Controller
         ]);
     }
 
-    public function show(Request $request, User $user)
+    public function show($user)
     {
-        return $user->tags;
+        $user = User::find($user);
+
+        if (!$user) {
+            return response()->json([
+                'status' => 'no user'
+            ]);
+        } else {
+            return $user->tags;
+        }
     }
 }
