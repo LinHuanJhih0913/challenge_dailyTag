@@ -27,7 +27,7 @@ Route::middleware('CheckContentTypeHeader', 'CheckAcceptHeader', 'auth:api')->gr
     Route::post('/tags', 'TagController@store');
 });
 
-Route::middleware('CheckContentTypeHeader', 'CheckAcceptHeader', 'auth:api', 'idAdmin')->group(function () {
+Route::middleware('CheckAcceptHeader', 'auth:api')->group(function () {
     Route::get('/tags/count', 'TagController@count');
     Route::get('/tags/all', 'TagController@all');
     Route::get('/tags/{user}', 'UserController@show');

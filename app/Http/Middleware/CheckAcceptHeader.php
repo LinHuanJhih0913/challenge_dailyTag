@@ -20,6 +20,12 @@ class CheckAcceptHeader
                 'status' => 'miss Accept header'
             ], 400);
         }
+
+        if ($request->header('Authorization') == null) {
+            return response()->json([
+                'status' => 'miss Authorization header'
+            ], 400);
+        }
         return $next($request);
     }
 }
