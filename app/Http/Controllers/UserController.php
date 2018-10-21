@@ -2,12 +2,28 @@
 
 namespace App\Http\Controllers;
 
+use App\Tag;
 use App\User;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
+    public function index(Request $request)
+    {
+        if ($request->query('tag') != null) {
+            $result = array();
+            $tags = Tag::where('tag', $request->query('tag'))->select(['user_id'])->distinct()->get();
+
+            foreach ($tags as $tag) {
+                array_push($result, $tag->user);
+            }
+            return $result;
+        }
+        return 'something wrong';
+    }
+
     public function store(Request $request)
     {
         $input = $request->all();

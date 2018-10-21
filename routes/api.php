@@ -28,4 +28,5 @@ Route::middleware('auth:api', 'idAdmin')->group(function () {
     Route::get('/tags/count', 'TagController@count');
     Route::get('/tags/all', 'TagController@all');
     Route::get('/tags/{user}', 'UserController@show');
+    Route::get('/users', 'UserController@index');
 });
