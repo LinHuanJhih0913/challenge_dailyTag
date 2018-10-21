@@ -13,6 +13,6 @@ class User extends Authenticatable
 
     public function tags()
     {
-        return $this->hasMany('App\Tag')->select(['user_id', 'tag']);
+        return $this->hasMany('App\Tag')->select(['tag']);
     }
 }

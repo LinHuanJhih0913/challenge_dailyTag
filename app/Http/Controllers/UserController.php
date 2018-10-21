@@ -20,7 +20,9 @@ class UserController extends Controller
             }
             return $result;
         }
-        return 'something wrong';
+        return response()->json([
+            'status' => 'something wrong'
+        ], 400);
     }
 
     public function store(Request $request)
@@ -61,13 +63,14 @@ class UserController extends Controller
     public function show($user)
     {
         $user = User::find($user);
-
         if (!$user) {
             return response()->json([
                 'status' => 'no user'
-            ]);
+            ], 401);
         } else {
-            return $user->tags;
+            return response()->json([
+                'tags' => $user->tags
+            ]);
         }
     }
 }

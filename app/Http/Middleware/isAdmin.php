@@ -17,7 +17,7 @@ class isAdmin
     {
         if (!(boolean)$request->user()['isAdmin']) {
             return response()->json([
-                'status' => 'something wrong'
+                'status' => 'no super user'
             ]);
         }
         return $next($request);
