@@ -44,7 +44,7 @@ class UserController extends Controller
         if ($validator->fails()) {
             return response()->json([
                 'status' => $validator->errors(),
-            ]);
+            ], 422);
         }
 
         User::create([
@@ -55,7 +55,7 @@ class UserController extends Controller
 
         return response()->json([
             'status' => 'register success'
-        ]);
+        ], 200);
     }
 
     public function show($user)
