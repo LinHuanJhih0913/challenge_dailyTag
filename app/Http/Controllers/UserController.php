@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Tag;
 use App\User;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 
@@ -44,19 +43,15 @@ class UserController extends Controller
 
         if ($validator->fails()) {
             return response()->json([
-                'error' => $validator->errors(),
+                'status' => $validator->errors(),
             ]);
         }
 
-        if (!User::create([
+        User::create([
             'name' => $request['name'],
             'email' => $request['email'],
             'password' => bcrypt($request['password'])
-        ])) {
-            return response()->json([
-                'status' => 'error'
-            ]);
-        }
+        ]);
 
         return response()->json([
             'status' => 'register success'
