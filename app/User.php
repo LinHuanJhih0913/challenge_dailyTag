@@ -10,4 +10,9 @@ class User extends Authenticatable
     use Notifiable;
 
     protected $guarded = [];
+
+    public function tags()
+    {
+        return $this->hasMany('App\Tag')->select(['tag']);
+    }
 }

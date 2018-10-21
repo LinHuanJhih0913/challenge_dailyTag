@@ -25,8 +25,8 @@ class AuthController extends Controller
 
         if ($validator->fails()) {
             return response()->json([
-                'error' => $validator->errors(),
-            ]);
+                'status' => $validator->errors(),
+            ], 422);
         }
 
         $user_info = [
@@ -34,30 +34,27 @@ class AuthController extends Controller
         ];
         if (!Auth::attempt($user_info)) {
             return response()->json([
-                'status' => 'something wrong'
-            ]);
-        }
-        $api_token = User::select('api_token')->where('email', $input['email'])->first();
-        // 如果沒有發過token的話，重發
-        if ($api_token['api_token'] == null) {
-            // 產生 api_token
-            $token = str_random(20);
-
-            // 將 api_token 存進 DB
-            User::where('id', Auth::id())->update([
-                'api_token' => $token
-            ]);
-
-            // 發 api_token 給 client
-            return response()->json([
-                'statue' => 'login success',
-                'api_token' => $token
-            ]);
+                'status' => 'email or password is incorrect'
+            ], 401);
         } else {
-            return response()->json([
-                'statue' => 'login success',
-                'api_token' => $api_token['api_token']
-            ]);
+            $user = $request->user();
+            if ($user['api_token'] == null) {
+                $token = str_random(20);
+
+                User::where('id', $user['id'])->update([
+                    'api_token' => $token
+                ]);
+
+                return response()->json([
+                    'statue' => 'login success',
+                    'api_token' => $token
+                ], 200);
+            } else {
+                return response()->json([
+                    'statue' => 'login success',
+                    'api_token' => $user['api_token']
+                ], 200);
+            }
         }
     }
 }

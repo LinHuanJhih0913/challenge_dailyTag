@@ -16,10 +16,20 @@ use Illuminate\Http\Request;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
-Route::post('/register', 'UserController@store');
-Route::post('/login', 'AuthController@login');
 
-Route::middleware('auth:api')->group(function () {
+Route::middleware('CheckContentTypeHeader')->group(function () {
+    Route::post('/register', 'UserController@store');
+    Route::post('/login', 'AuthController@login');
+});
+
+Route::middleware('CheckContentTypeHeader', 'CheckAcceptHeader', 'auth:api')->group(function () {
     Route::get('/tags', 'TagController@index');
     Route::post('/tags', 'TagController@store');
+});
+
+Route::middleware('CheckAcceptHeader', 'auth:api', 'idAdmin')->group(function () {
+    Route::get('/tags/count', 'TagController@count');
+    Route::get('/tags/all', 'TagController@all');
+    Route::get('/tags/{user}', 'UserController@show');
+    Route::get('/users', 'UserController@index');
 });
