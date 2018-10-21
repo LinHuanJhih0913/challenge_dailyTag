@@ -19,16 +19,16 @@ class TagController extends Controller
             return response()->json([
                 'today' => $today,
                 'tags' => $tags
-            ]);
+            ], 200);
         } else if ($request->query() == null) {
             $tags = Tag::select(['tag'])->where('user_id', $user['id'])->latest()->get();
             return response()->json([
                 'tags' => $tags
-            ]);
+            ], 200);
         } else {
             return response()->json([
                 'status' => 'QueryString Error'
-            ], 400);
+            ], 422);
         }
     }
 
@@ -79,7 +79,7 @@ class TagController extends Controller
             array_push($value, $countOfTag);
         }
         $result = array_combine($key, $value);
-        return response($result);
+        return response()->json($result, 200);
     }
 
     public function all()

@@ -21,7 +21,7 @@ class UserController extends Controller
             return $result;
         }
         return response()->json([
-            'status' => 'something wrong'
+            'status' => 'QueryString Error'
         ], 400);
     }
 
