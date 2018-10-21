@@ -25,8 +25,8 @@ class AuthController extends Controller
 
         if ($validator->fails()) {
             return response()->json([
-                'error' => $validator->errors(),
-            ]);
+                'status' => $validator->errors(),
+            ], 422);
         }
 
         $user_info = [
@@ -34,27 +34,27 @@ class AuthController extends Controller
         ];
         if (!Auth::attempt($user_info)) {
             return response()->json([
-                'status' => 'something wrong'
-            ]);
-        }
-
-        $user = $request->user();
-        if ($user['api_token'] == null) {
-            $token = str_random(20);
-
-            User::where('id', $user['id'])->update([
-                'api_token' => $token
-            ]);
-            
-            return response()->json([
-                'statue' => 'login success',
-                'api_token' => $token
-            ]);
+                'status' => 'email or password is incorrect'
+            ], 401);
         } else {
-            return response()->json([
-                'statue' => 'login success',
-                'api_token' => $user['api_token']
-            ]);
+            $user = $request->user();
+            if ($user['api_token'] == null) {
+                $token = str_random(20);
+
+                User::where('id', $user['id'])->update([
+                    'api_token' => $token
+                ]);
+
+                return response()->json([
+                    'statue' => 'login success',
+                    'api_token' => $token
+                ], 200);
+            } else {
+                return response()->json([
+                    'statue' => 'login success',
+                    'api_token' => $user['api_token']
+                ], 200);
+            }
         }
     }
 }
