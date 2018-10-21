@@ -22,12 +22,12 @@ Route::middleware('CheckContentTypeHeader')->group(function () {
     Route::post('/login', 'AuthController@login');
 });
 
-Route::middleware('auth:api')->group(function () {
+Route::middleware('CheckContentTypeHeader', 'CheckAcceptHeader', 'auth:api')->group(function () {
     Route::get('/tags', 'TagController@index');
     Route::post('/tags', 'TagController@store');
 });
 
-Route::middleware('auth:api', 'idAdmin')->group(function () {
+Route::middleware('CheckContentTypeHeader', 'CheckAcceptHeader', 'auth:api', 'idAdmin')->group(function () {
     Route::get('/tags/count', 'TagController@count');
     Route::get('/tags/all', 'TagController@all');
     Route::get('/tags/{user}', 'UserController@show');

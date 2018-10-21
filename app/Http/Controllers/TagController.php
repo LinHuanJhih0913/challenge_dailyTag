@@ -36,7 +36,6 @@ class TagController extends Controller
     {
         $input = $request->all();
         $rules = [
-            'api_token' => 'required',
             'tags' => 'required|max:255'
         ];
         $messages = [
@@ -47,11 +46,11 @@ class TagController extends Controller
 
         if ($validator->fails()) {
             return response()->json([
-                'error' => $validator->errors(),
-            ]);
+                'status' => $validator->errors(),
+            ], 422);
         }
 
-        $user = User::where('api_token', $input['api_token'])->first();
+        $user = User::where('api_token', $request->user()['api_token'])->first();
         $tags = explode(',', $input['tags']);
 
         foreach ($tags as $tag) {
@@ -64,7 +63,7 @@ class TagController extends Controller
         }
         return response()->json([
             'status' => 'tag success'
-        ]);
+        ], 200);
     }
 
     public function count()
